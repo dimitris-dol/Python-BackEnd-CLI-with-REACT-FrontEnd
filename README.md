@@ -2,6 +2,7 @@
    
    1. Install node.js
    2. Install yarn
+   
    2.5 Κατεβάστε τα αρχεία απο src
    
    3. mkdir my-app
