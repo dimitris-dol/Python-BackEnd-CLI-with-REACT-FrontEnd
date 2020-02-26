@@ -6,6 +6,7 @@
    2.5 Κατεβάστε τα αρχεία απο src
    
    3. mkdir my-app
+   
       cd my-app
    4. yarn install
    5. yarn create react-app my-app
