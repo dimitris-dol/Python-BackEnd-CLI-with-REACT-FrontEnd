@@ -5,6 +5,8 @@
    
    2.5 Κατεβάστε τα αρχεία απο src
    
+   Στο powershell των windows
+   
    3. mkdir my-app
    
       cd my-app
