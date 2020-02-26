@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+.center {
+  margin: auto;
+  width: 50%;
+ position: relative;
+ left: 25px;
+}
+
+.right-correction {
+	right: 100px;
+}
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 30%;
+}
+
+.right {
+  width: 70%;
+  right: 100px;
+  background-color: 
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content select {
+  background-color: #F0FFFF;
+  width:200px;
+}	
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+.data-set {
+	border-style: solid;
+}
