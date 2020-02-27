@@ -269,7 +269,7 @@ if args.SCOPE == 'Admin':
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'Admin/' + 'newuser'
-            result = requests.post(url_format, data = {'username' : args.newuser, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
+            result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
             try_except(result)
         except ConnectionError as Err:
             print('An error occured \n',Err)
@@ -282,7 +282,7 @@ if args.SCOPE == 'Admin':
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'Admin/' + 'moduser&' + api_key
-            result = requests.post(url_format, data = {'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
+            result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
             if result.status_code == 200:
                 print('User modified successfully')
                 exit()
