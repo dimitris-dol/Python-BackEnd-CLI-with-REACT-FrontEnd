@@ -1,0 +1,2 @@
+source,dataset,areaname,areatypecode,mapcode,resolutioncode,year,month,actualtotalloadvalue
+entso-e,ActualTotalLoad,Greece,CTY,GR,PT60M,2018,1,1308759.35

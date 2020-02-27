@@ -1,0 +1,14 @@
+<!--
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+-->
+
+<form action="/urlencoded?firstname=sid slayer&lastname=sloth" method="POST" enctype="application/x-www-form-urlencoded">
+    <input type="text" name="username"/>
+    <input type="text" name="password" maxlength="32"/>
+    <input type="submit" value="Login" />
+</form>
