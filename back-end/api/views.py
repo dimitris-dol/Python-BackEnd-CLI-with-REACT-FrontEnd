@@ -67,7 +67,7 @@ class Login(views.APIView):
         ggg = make_password(password)
         if gg or ggg == user[0].password:
             jwt_token = {user[0].api_key : 200}
-            return HttpResponse(
+            return JsonResponse(
                 jwt_token
             )
         else:
