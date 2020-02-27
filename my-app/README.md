@@ -6,6 +6,7 @@ How to get HTTPS certificate on your PC:
 2. Click on the Security tab
 3. Click on View certificate and you’ll have the option to download the certificate — either by dragging it to your desktop in OS X, or by clicking on the Details tab in Windows and clicking Copy to File…
 4. Choose the DER encoded binary X.509 (.CER) option (the first one) and save it.
+
 5.Then, double click on the certificate and install it.
 
 6.Choose Local Machine
