@@ -281,7 +281,7 @@ if args.SCOPE == 'Admin':
             api_key = getkey()
             if args.apikey:
                 api_key = args.apikey
-            url_format = url + 'Admin/' + 'moduser&' + api_key
+            url_format = url + 'Admin/' + 'moduser'
             result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
             if result.status_code == 200:
                 print('User modified successfully')
