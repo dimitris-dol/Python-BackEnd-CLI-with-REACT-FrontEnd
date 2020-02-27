@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_ALLOW_ALL=True
+
 
 # Application definition
 
@@ -40,9 +42,12 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework_api_key',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'entsoe',
         'USER': 'root',
-        'PASSWORD': 'hekG75rGK6fmm',
+        'PASSWORD': '10402017',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
