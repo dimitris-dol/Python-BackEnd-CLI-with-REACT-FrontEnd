@@ -87,6 +87,7 @@ export class Logout extends Component {
     doLogout() {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.clear()
 
         this.context.setUserData(null, null);
 
@@ -97,10 +98,10 @@ export class Logout extends Component {
         //perform an ajax call to logout
         //and then clean up local storage and
         //context state.
-        fetch('https://localhost:8765/energy/api/Logout',{
+        fetch('http://localhost:8765/energy/api/Logout',{
             method: 'POST',
             headers: {
-                'X-OBSERVATORY-AUTH': this.context.username,
+
                 'Content-Type':'application/x-www-form-urlencoded',
             }
         }).then(() => this.doLogout());
