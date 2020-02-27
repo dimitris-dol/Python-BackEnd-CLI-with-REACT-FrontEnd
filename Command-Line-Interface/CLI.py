@@ -281,7 +281,7 @@ if args.SCOPE == 'Admin':
             api_key = getkey()
             if args.apikey:
                 api_key = args.apikey
-            url_format = url + 'Admin/' + 'moduser&' + api_key
+            url_format = url + 'Admin/' + 'moduser'
             result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
             if result.status_code == 200:
                 print('User modified successfully')
@@ -295,7 +295,7 @@ if args.SCOPE == 'Admin':
             api_key = getkey()
             if args.apikey:
                 api_key = args.apikey
-            url_format = url + 'Admin/' + 'userstatus&' + api_key
+            url_format = url + 'Admin/' + 'userstatus'
             result = requests.get(url_format)
             try_except(result)
         except ConnectionError as Err:
@@ -305,7 +305,7 @@ if args.SCOPE == 'Admin':
             if not args.source:
                 print('No source provided')
                 exit()
-            url_format = url + 'Admin/' + 'newdata&' + api_key
+            url_format = url + 'Admin/' + 'newdata'
             try:
                 with open(args.source, 'rb') as f:
                     result = requests.post(url_format, files={args.source : f})

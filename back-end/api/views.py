@@ -38,6 +38,23 @@ class newuser(views.APIView):
         return JsonResponse({'status':'OK'})
 
 
+#Den yparxei to email sth database
+#Xreiazetai na leei an den uparxei xristis??
+class moduser(views.APIView):
+    def post(self,request,*args,**kwargs):
+        username = request.POST.get('username')
+        password = make_password(request.POST.get('password'))
+        email = request.POST.get('email')
+        quotas = request.POST.get('quotas')
+        with connection.cursor() as cursor:
+            cursor.execute('''UPDATE user
+                              SET Password = %s,
+                                  quotas = %s
+                              WHERE LoginName = %s''',(password,quotas,username))
+        return JsonResponse({'status':'OK'})
+
+
+
 
 #destroy everything
 def reset(request):
