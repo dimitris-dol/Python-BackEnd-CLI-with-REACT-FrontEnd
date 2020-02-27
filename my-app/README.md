@@ -1,3 +1,19 @@
+HTTPS ERROR:
+
+How to get HTTPS certificate on your PC:
+
+1. Open the Chrome Developer Tools window (ctrl + shift + i / cmd + option + i).
+2. Click on the Security tab
+3. Click on View certificate and you’ll have the option to download the certificate — either by dragging it to your desktop in OS X, or by clicking on the Details tab in Windows and clicking Copy to File…
+4. Choose the DER encoded binary X.509 (.CER) option (the first one) and save it.
+5.Then, double click on the certificate and install it.
+6.Choose Local Machine
+7.Select Place all certificates in the following store
+8.Choose Trusted Root Certification Authorities
+9.And, finally, confirm your installation.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
