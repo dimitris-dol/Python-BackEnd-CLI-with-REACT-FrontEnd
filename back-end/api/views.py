@@ -25,16 +25,16 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-
+#Den yparxei to email sti database
 class newuser(views.APIView):
     def post(self,request,*args,**kwargs):
         username = request.POST.get('username')
-        password = request.POST.get('password')
+        password = make_password(request.POST.get('password'))
         email = request.POST.get('email')
         quotas = request.POST.get('quotas')
         time = timezone.now().date()
         with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO User VALUES (username,password,"a","s","d",time,quotas)')
+            cursor.execute('INSERT INTO user VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',(username,password,None,None,None,0,time,quotas))
         return JsonResponse({'status':'OK'})
 
 
