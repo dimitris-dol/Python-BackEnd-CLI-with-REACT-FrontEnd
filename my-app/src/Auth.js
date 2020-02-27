@@ -42,7 +42,6 @@ export class Login extends Component {
         fetch('http://localhost:8765/urlencoded',request).then((response) => response.json())
         .then(json => {
 
-            console.log("succed");
 
             //store the user's data in local storage
             //to make them available for the next
