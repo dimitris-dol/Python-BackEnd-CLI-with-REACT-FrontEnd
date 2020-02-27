@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { UserContext } from './UserContext';
 
+const withErrorHandling = WrappedComponent => ({ showError, children }) => {
+  return (
+    <WrappedComponent>
+      {showError && <div className="error-message">Oops! Something went wrong!</div>}
+      {children}
+    </WrappedComponent>
+  );
+};
+
 export class Login extends Component {
 
     static contextType = UserContext;
+
+
 
     constructor(props) {
         super(props);
@@ -39,19 +50,24 @@ export class Login extends Component {
             },
             body: formBody
         };
-        fetch('http://localhost:8765/urlencoded',request).then((response) => response.json())
-        .then(json => {
-
-
+        fetch('http://localhost:8765/urlencoded',request).then((response) => response.text())
+        .then(text => {
             //store the user's data in local storage
             //to make them available for the next
             //user's visit
-            localStorage.setItem('token', json.token);
+            console.log(text)
+            if(text == "error: invalid credentials"){
+                return
+              }
+            if(text == "Error: invalid username or password"){
+            return
+            }
+            localStorage.setItem('token', text.token);
             localStorage.setItem('username', u);
 
             //use the setUserData function available
             //through the UserContext
-            this.context.setUserData(json.token, u);
+            this.context.setUserData(text.token, u);
 
             //use the history prop available through
             //the Route to programmatically navigate
