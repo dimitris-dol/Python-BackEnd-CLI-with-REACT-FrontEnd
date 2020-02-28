@@ -50,6 +50,7 @@ urlpatterns = [
     path('energy/api/Logout', views.Logout.as_view(),name='logout'),
     path('energy/api/Reset',views.reset),
     path('energy/api/Admin/newuser',views.newuser.as_view(),name='newuser'),
-    path('energy/api/Admin/moduser',views.moduser.as_view(),name='moduser')
+    path('energy/api/Admin/moduser',views.moduser.as_view(),name='moduser'),
+    path('energy/api/Admin/userstatus',views.userstatus.as_view(),name='userstatus')
 
 ]

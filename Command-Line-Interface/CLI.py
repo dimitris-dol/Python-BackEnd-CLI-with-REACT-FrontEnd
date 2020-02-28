@@ -171,7 +171,7 @@ if args.SCOPE == 'Login':
         url_format = 'http://localhost:8765/urlencoded'
         result = requests.post(url_format, data = {'username' : args.username , 'password' : args.passw})
         if result.status_code == 200:
-            createkey(result.text)
+            createkey(result.json()['token'])
         else:
             http_response(result)
     except ConnectionError as Err:
@@ -270,7 +270,10 @@ if args.SCOPE == 'Admin':
                 api_key = args.apikey
             url_format = url + 'Admin/' + 'newuser'
             result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
-            try_except(result)
+            if result.status_code == 200:
+                createkey(result.json()['token'])
+            else:
+                http_response(result)
         except ConnectionError as Err:
             print('An error occured \n',Err)
     elif args.moduser:
@@ -296,7 +299,7 @@ if args.SCOPE == 'Admin':
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'Admin/' + 'userstatus'
-            result = requests.get(url_format)
+            result = requests.post(url_format, data = {'username' : args.username})
             try_except(result)
         except ConnectionError as Err:
             print('An error occured \n',Err)

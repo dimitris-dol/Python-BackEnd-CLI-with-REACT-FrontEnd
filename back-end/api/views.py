@@ -35,8 +35,10 @@ class newuser(views.APIView):
         time = timezone.now().date()
         with connection.cursor() as cursor:
             cursor.execute('INSERT INTO user VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',(username,password,None,None,None,0,time,quotas))
-        return JsonResponse({'status':'OK'})
-
+        user = User.objects.filter(loginname = username)
+        user[0].save()
+        jwt_token = {'token' : user[0].api_key}
+        return JsonResponse(jwt_token)
 
 #Den yparxei to email sth database
 #Xreiazetai na leei an den uparxei xristis??
@@ -54,6 +56,20 @@ class moduser(views.APIView):
         return JsonResponse({'status':'OK'})
 
 
+
+class userstatus(views.APIView):
+    def post(self,request,*args,**kwargs):
+        username = request.POST.get('username')
+        with connection.cursor() as cursor:
+            cursor.execute('''SELECT api_key, quotas, counter, dateOfkey
+                            FROM user
+                            WHERE LoginName = %s''',[username])
+            table = cursor.fetchall()
+            return JsonResponse({'username': username,
+                            'API key' : table[0][0],
+                            'quota' : table[0][1],
+                            'Current Period' : table[0][3],
+                            'Remaining calls' : table[0][1] - table[0][2]})
 
 
 #destroy everything
@@ -82,8 +98,9 @@ class Login(views.APIView):
             return HttpResponse({'Error: invalid username or password'},status=400)
         gg = check_password(password,user[0].password)
         ggg = make_password(password)
+        user[0].save()
         if gg or ggg == user[0].password:
-            jwt_token = {user[0].api_key : 200}
+            jwt_token = {'token' : user[0].api_key}
             return JsonResponse(
                 jwt_token
             )
