@@ -310,8 +310,10 @@ if args.SCOPE == 'Admin':
                 exit()
             url_format = url + 'Admin/' + 'newdata'
             try:
-                with open(args.source, 'rb') as f:
-                    result = requests.post(url_format, files={args.source : f})
+                source = './' + args.source
+                with open(source, 'rb') as f:
+                    result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, files = {'file' : f})
+                    print(result.text)
                     try_except(result)
             except FileNotFoundError:
                 print('File was not found in the directory')

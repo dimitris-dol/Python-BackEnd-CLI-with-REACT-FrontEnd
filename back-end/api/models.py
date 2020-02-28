@@ -24,6 +24,7 @@ class User(models.Model):
     password = models.CharField(db_column='Password', max_length=100)  # Field name made lowercase.
     firstname = models.CharField(db_column='FirstName', max_length=40, blank=True, null=True)  # Field name made lowercase.
     lastname = models.CharField(db_column='LastName', max_length=40, blank=True, null=True)  # Field name made lowercase.
+    email = models.CharField(db_column='email', max_length=256, blank=False, null=False)
     api_key = models.CharField(db_column ='api_key', max_length = 256,blank=True,null=True)
     counter = models.IntegerField(db_column='counter',default=0)
     dateOfkey = models.DateTimeField(db_column='dateOfkey')

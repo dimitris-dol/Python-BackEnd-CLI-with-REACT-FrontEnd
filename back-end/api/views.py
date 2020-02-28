@@ -14,10 +14,12 @@ from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
 from rest_framework import views
 import json
+import unicodecsv
 import jwt
 from operator import itemgetter
 from django.db.models import Sum
 import csv
+from io import StringIO
 from django.shortcuts import redirect
 from django.template import loader
 from django.contrib.auth.decorators import *
@@ -34,7 +36,7 @@ class newuser(views.APIView):
         quotas = request.POST.get('quotas')
         time = timezone.now().date()
         with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO user VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',(username,password,None,None,None,0,time,quotas))
+            cursor.execute('INSERT INTO user VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',(username,password,None,None,email,None,0,time,quotas))
         user = User.objects.filter(loginname = username)
         user[0].save()
         jwt_token = {'token' : user[0].api_key}
@@ -51,25 +53,66 @@ class moduser(views.APIView):
         with connection.cursor() as cursor:
             cursor.execute('''UPDATE user
                               SET Password = %s,
+                                  email = %s,
                                   quotas = %s
-                              WHERE LoginName = %s''',(password,quotas,username))
+                              WHERE LoginName = %s''',(password,emails,quotas,username))
         return JsonResponse({'status':'OK'})
-
 
 
 class userstatus(views.APIView):
     def post(self,request,*args,**kwargs):
         username = request.POST.get('username')
         with connection.cursor() as cursor:
-            cursor.execute('''SELECT api_key, quotas, counter, dateOfkey
+            cursor.execute('''SELECT api_key, quotas, counter, dateOfkey, email
                             FROM user
                             WHERE LoginName = %s''',[username])
             table = cursor.fetchall()
             return JsonResponse({'username': username,
                             'API key' : table[0][0],
+                            'email' : table[0][4],
                             'quota' : table[0][1],
                             'Current Period' : table[0][3],
                             'Remaining calls' : table[0][1] - table[0][2]})
+
+
+class newdata(views.APIView):
+    def post(self,request,*args,**kwargs):
+        if request.POST and request.FILES:
+            type = request.POST['type']
+            filename = request.POST['filename']
+            csvfile = request.FILES['file']
+            csv_file = csvfile.open()
+            csv_reader = unicodecsv.reader(csv_file, delimiter=',')
+            with connection.cursor() as cursor:
+                counter = 0
+                if type == 'ActualTotalLoad':
+                    cursor.execute('SELECT COUNT(id) FROM Actualtotalload')
+                elif type == 'AggregatedGenerationPerType':
+                    cursor.execute('SELECT COUNT(id) FROM Aggregatedgenerationpertype')
+                elif type == 'DayAheadTotalLoadForecast':
+                    cursor.execute('SELECT COUNT(id) FROM Dayaheadtotalloadforecast')
+                init = int(cursor.fetchall()[0][0])
+                for c in csv_reader:
+                    counter = counter + 1
+                    if type == 'ActualTotalLoad': #16
+                        conn.cursor().execute('INSERT INTO Actualtotalload VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16]))
+                    elif type == 'AggregatedGenerationPerType': #18
+                        conn.cursor().execute('INSERT INTO Aggregatedgenerationpertype VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16],c[17],c[18]))
+                    elif type == 'DayAheadTotalLoadForecast': #16
+                        conn.cursor().execute('INSERT INTO Dayaheadtotalloadforecast VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16]))
+                if type == 'ActualTotalLoad':
+                    cnx.cursor().execute('SELECT COUNT(id) FROM Actualtotalload')
+                elif type == 'AggregatedGenerationPerType':
+                    cnx.cursor().execute('SELECT COUNT(id) FROM Aggregatedgenerationpertype')
+                elif type == 'DayAheadTotalLoadForecast':
+                    cnx.cursor().execute('SELECT COUNT(id) FROM Dayaheadtotalloadforecast')
+                fin = int(cnx.cursor().fetchall()[0][0])
+            return JsonResponse({'status' : 'ok',
+                                'num of data in file' : counter,
+                                'number of added data' :' fin - init',
+                                'number of data in database' : 'fin'})
+        return JsonResponse({'status' : 'upload failed'})
+
 
 
 #destroy everything
