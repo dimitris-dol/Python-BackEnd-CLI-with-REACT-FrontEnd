@@ -11,9 +11,6 @@ from django.views.generic import TemplateView
 #router.register(r'users',views.UserViewSet)
 
 urlpatterns = [
-    #path('', include(router.urls)),
-    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-    path('emergy/api/users/',views.user_list),
     path('energy/api/users/<int:pk>/',views.user_detail),
     #lists
     path('energy/api/ActualTotalLoad/',views.actualtotalload_list),
