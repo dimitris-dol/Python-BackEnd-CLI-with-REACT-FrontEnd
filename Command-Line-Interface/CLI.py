@@ -143,8 +143,8 @@ def main():
         if args.apikey:
             api_key = args.apikey
         try:
-            url_format = url + 'ActualTotalLoad/' + args.area + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format + '&' + api_key
-            result = requests.get(url_format)
+            url_format = url + 'ActualTotalLoad/' + args.area + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
+            result = requests.post(url_format, headers = {'header' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -202,7 +202,7 @@ def main():
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'Logout'
-            result = requests.post(url_format, data = {'api_key' : api_key})
+            result = requests.post(url_format, headers = {'api_key' : api_key})
             if result.status_code == 200:
                 try:
                     os.remove("./softeng19bAPI.token")
@@ -234,8 +234,8 @@ def main():
             if not args.productiontype:
                 print("No production type parameter was found")
                 return "Invalid parameter"
-            url_format = url + 'AggregatedGenerationPerType/' + args.area + '/' + prod + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format + '&' + api_key
-            result = requests.get(url_format)
+            url_format = url + 'AggregatedGenerationPerType/' + args.area + '/' + prod + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
+            result = requests.post(url_format, headers = {'header' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -256,8 +256,8 @@ def main():
             (dmy,type) = date_type()
             if args.apikey:
                 api_key = args.apikey
-            url_format = url + 'DayAheadTotalLoadForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format + '&' + api_key
-            result = requests.get(url_format)
+            url_format = url + 'DayAheadTotalLoadForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
+            result = requests.post(url_format, headers = {'header' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -278,8 +278,8 @@ def main():
             (dmy,type) = date_type()
             if args.apikey:
                 api_key = args.apikey
-            url_format = url + 'ActualvsForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format + '&' + api_key
-            result = requests.get(url_format)
+            url_format = url + 'ActualvsForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
+            result = requests.post(url_format, headers = {'header' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
