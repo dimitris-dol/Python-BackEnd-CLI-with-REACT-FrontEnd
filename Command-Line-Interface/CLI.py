@@ -144,7 +144,7 @@ def main():
             api_key = args.apikey
         try:
             url_format = url + 'ActualTotalLoad/' + args.area + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
+            result = requests.post(url_format, headers = {'headers' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -235,7 +235,7 @@ def main():
                 print("No production type parameter was found")
                 return "Invalid parameter"
             url_format = url + 'AggregatedGenerationPerType/' + args.area + '/' + prod + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
+            result = requests.post(url_format, headers = {'headers' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -257,7 +257,7 @@ def main():
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'DayAheadTotalLoadForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
+            result = requests.post(url_format, headers = {'headers' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -296,7 +296,7 @@ def main():
                 if args.apikey:
                     api_key = args.apikey
                 url_format = url + 'Admin/' + 'newuser'
-                result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
+                result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota}, headers = {'headers' : api_key})
                 if result.status_code == 200:
                     if result.json()['token'] != 'already exists':
                         createkey(result.json()['token'])
@@ -317,7 +317,7 @@ def main():
                 if args.apikey:
                     api_key = args.apikey
                 url_format = url + 'Admin/' + 'moduser'
-                result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota})
+                result = requests.post(url_format, data = {'username' : args.username, 'password' : args.passw, 'email' : args.email, 'quotas' : args.quota}, headers = {'headers' : api_key})
                 if result.status_code == 200:
                     print('User modified successfully')
                     return 1
@@ -335,7 +335,7 @@ def main():
                 if args.apikey:
                     api_key = args.apikey
                 url_format = url + 'Admin/' + 'userstatus'
-                result = requests.post(url_format, data = {'username' : args.username})
+                result = requests.post(url_format, data = {'username' : args.username}, headers = {'headers' : api_key})
                 try_except(result)
                 return 1
             except ConnectionError as Err:
@@ -349,7 +349,7 @@ def main():
                 try:
                     source = './' + args.source
                     with open(source, 'rb') as f:
-                        result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, files = {'file' : f})
+                        result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, files = {'file' : f}, headers = {'headers' : api_key})
                         print(result.text)
                         try_except(result)
                         return 1

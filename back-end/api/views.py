@@ -31,6 +31,10 @@ from django.template import Context, loader
 #Den yparxei to email sti database
 class newuser(views.APIView):
     def post(self,request,*args,**kwargs):
+        token = request.headers['headers']
+        user = User.objects.filter(loginname = 'admin')
+        if user[0].api_key != token:
+            return HttpResponse(status = 401)
         username = request.POST.get('username')
         password = make_password(request.POST.get('password'))
         email = request.POST.get('email')
@@ -50,6 +54,10 @@ class newuser(views.APIView):
 #Xreiazetai na leei an den uparxei xristis??
 class moduser(views.APIView):
     def post(self,request,*args,**kwargs):
+        token = request.headers['headers']
+        user = User.objects.filter(loginname = 'admin')
+        if user[0].api_key != token:
+            return HttpResponse(status = 401)
         username = request.POST.get('username')
         password = make_password(request.POST.get('password'))
         email = request.POST.get('email')
@@ -65,6 +73,10 @@ class moduser(views.APIView):
 
 class userstatus(views.APIView):
     def post(self,request,*args,**kwargs):
+        token = request.headers['headers']
+        user = User.objects.filter(loginname = 'admin')
+        if user[0].api_key != token:
+            return HttpResponse(status = 401)
         username = request.POST.get('username')
         with connection.cursor() as cursor:
             cursor.execute('''SELECT api_key, quotas, counter, dateOfkey, email
@@ -84,6 +96,10 @@ class userstatus(views.APIView):
 
 class newdata(views.APIView):
     def post(self,request,*args,**kwargs):
+        token = request.headers['headers']
+        user = User.objects.filter(loginname = 'admin')
+        if user[0].api_key != token:
+            return HttpResponse(status = 401)
         if request.POST and request.FILES:
             type = request.POST['type']
             filename = request.POST['filename']
@@ -102,6 +118,8 @@ class newdata(views.APIView):
                     init = int(cursor.fetchall()[0][0])
                     for c in csv_reader:
                         counter = counter + 1
+                        if counter == 1:
+                            continue
                         if type == 'ActualTotalLoad': #16
                             conn.cursor().execute('INSERT INTO Actualtotalload VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16]))
                         elif type == 'AggregatedGenerationPerType': #18
@@ -118,7 +136,7 @@ class newdata(views.APIView):
                 except:
                     return JsonResponse({'file' : 'invalid content'})
             return JsonResponse({'status' : 'ok',
-                                'num of data in file' : counter,
+                                'num of data in file' : counter-1,
                                 'number of added data' : fin - init,
                                 'number of data in database' : fin})
         return JsonResponse({'status' : 'upload failed'})
@@ -316,7 +334,7 @@ def actual(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv') >-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token) == 2:
             return actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -331,7 +349,7 @@ def actual(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return actualtotalload_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -345,7 +363,7 @@ def actual(request,areaname,resolutioncode,date,info):
         if info.find('csv') > -1:
             format = 'csv'
         print(format)
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         print("gg")
         print(token)
         if auth_token(token)==2:
@@ -376,7 +394,7 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail2(request,areaname,productiontype,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -391,7 +409,7 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail1(request,areaname,productiontype,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -404,7 +422,7 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail(request,areaname,productiontype,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -430,7 +448,7 @@ def dayahead(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -445,7 +463,7 @@ def dayahead(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -458,7 +476,7 @@ def dayahead(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -484,7 +502,7 @@ def actualvs(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token)==1 :
@@ -500,7 +518,7 @@ def actualvs(request,areaname,resolutioncode,date,info):
         if info.find('csv')>-1:
             format = 'csv'
 
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return actualvsforecast_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -513,7 +531,7 @@ def actualvs(request,areaname,resolutioncode,date,info):
         format = 'json'
         if info.find('csv')>-1:
             format = 'csv'
-        token = request.META['X_OBSERVATORY_AUTH']
+        token = request.headers['headers']
         if auth_token(token)==2:
             return actualvsforecast_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
