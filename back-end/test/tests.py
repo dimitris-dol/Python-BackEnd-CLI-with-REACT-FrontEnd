@@ -195,7 +195,7 @@ def test_login(self):
         print("out of quotas")
         user = User.objects.all()
         user[0].counter = user[0].quotas + 1
-        response = self.client.get('/energy/api/ActualvsForecast/Greece/PT60M/year/2018-01-04',**{'headers':user[0].api_key})
+        response = self.client.get('/energy/api/ActualvsForecast/Greece/PT60M/year/2018',**{'headers':user[0].api_key})
         print(response)
         self.assertEqual(response.status_code,402)
 
