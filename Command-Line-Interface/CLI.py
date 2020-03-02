@@ -144,7 +144,7 @@ def main():
             api_key = args.apikey
         try:
             url_format = url + 'ActualTotalLoad/' + args.area + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'header' : api_key})
+            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -235,7 +235,7 @@ def main():
                 print("No production type parameter was found")
                 return "Invalid parameter"
             url_format = url + 'AggregatedGenerationPerType/' + args.area + '/' + prod + '/' + args.timeres + '/' + type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'header' : api_key})
+            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -257,7 +257,7 @@ def main():
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'DayAheadTotalLoadForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'header' : api_key})
+            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -279,7 +279,7 @@ def main():
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'ActualvsForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'header' : api_key})
+            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:

@@ -313,14 +313,9 @@ def actual(request,areaname,resolutioncode,date,info):
         month = int(tmp)
         tmp = info[8:10]
         day = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
-        token = token
+        if info.find('csv'):
+            format = 'csv'
         token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token) == 2:
             return actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,format)
@@ -333,13 +328,9 @@ def actual(request,areaname,resolutioncode,date,info):
         year = int(tmp)
         tmp = info[5:7]
         month = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualtotalload_detail1(request,areaname,resolutioncode,year,month,format)
@@ -350,13 +341,9 @@ def actual(request,areaname,resolutioncode,date,info):
     elif date == 'year':
         tmp = info[0:4]
         year = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
@@ -384,13 +371,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         month = int(tmp)
         tmp = info[8:10]
         day = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail2(request,areaname,productiontype,resolutioncode,year,month,day,format)
@@ -403,13 +386,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         year = int(tmp)
         tmp = info[5:7]
         month = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail1(request,areaname,productiontype,resolutioncode,year,month,format)
@@ -420,13 +399,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
     elif date == 'year':
         tmp = info[0:4]
         year = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail(request,areaname,productiontype,resolutioncode,year,format)
@@ -450,13 +425,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
         month = int(tmp)
         tmp = info[8:10]
         day = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
@@ -469,13 +440,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
         year = int(tmp)
         tmp = info[5:7]
         month = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail1(request,areaname,resolutioncode,year,month,format)
@@ -486,13 +453,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
     elif date == 'year':
         tmp = info[0:4]
         year = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail(request,areaname,resolutioncode,year,format)
@@ -516,13 +479,9 @@ def actualvs(request,areaname,resolutioncode,date,info):
         month = int(tmp)
         tmp = info[8:10]
         day = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
@@ -535,13 +494,9 @@ def actualvs(request,areaname,resolutioncode,date,info):
         year = int(tmp)
         tmp = info[5:7]
         month = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return actualvsforecast_detail1(request,areaname,resolutioncode,year,month,format)
@@ -552,13 +507,9 @@ def actualvs(request,areaname,resolutioncode,date,info):
     elif date == 'year':
         tmp = info[0:4]
         year = int(tmp)
-        tmp = info.split('&')
         format = 'json'
-        token = tmp[1].split('=')
-        if len(tmp) > 2:
-            token = tmp[2].split('=')
-            if tmp[1].find('csv') > -1:
-                format = 'csv'
+        if info.find('csv'):
+            format = 'csv'
         token = token
         if auth_token(token)==2:
             return actualvsforecast_detail(request,areaname,resolutioncode,year,format)
