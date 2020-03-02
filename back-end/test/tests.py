@@ -123,22 +123,49 @@ class LoginTestCase(TestCase):
 
 #end of ActualvsForecast tests
 
+#succesfull login
     def test_login(self):
-        print("setUp: Run once for every test method to setup clean data.")
+        print("Succesfull Login")
         user = User.objects.all()
         response = self.client.post('/urlencoded', data = {'username': 'teo', 'password': '10'})
-        print('g')
         print (response)
         self.assertEqual(response.status_code,200)
 
+#unsuccessfull login
+def test_login(self):
+    print("Unsuccesfull login")
+    user = User.objects.all()
+    response = self.client.post('/urlencoded', data = {'username': 'teo', 'password': '1980'})
+    print (response)
+    self.assertEqual(response.status_code,400)
+
+
+#logout
     def test_logout(self):
         print("Logout")
         response = self.client.post('/energy/api/Logout')
+        print(response)
         self.assertEqual(response.status_code,200)
 
+#Healthcheck
     def test_healthCheck(self):
         print("HealthCheck")
         response = self.client.get('/energy/api/HealthCheck')
+        print(response)
         self.assertEqual(response.status_code,200)
 
+#out of Quotas
+    def test_out_of_quotas(self):
+        print("out of quotas")
+        user = User.objects.all()
+        user[0].counter = user[0].quotas + 1
+        response = self.client.get('/energy/api/ActualvsForecast/Greece/PT60M/year/2018-01-04',**{X_OBSERVATORY_AUTH:user[0].api_key})
+        print(response)
+        self.assertEqual(response.status_code,402)
+
+#reset
+    def test_reset(self):
+        response = self.client.get('/energy/api/Reset')
+        print(rersponse)
+        self.assertEqual(response.status_code,200)
 # Create your tests here.
