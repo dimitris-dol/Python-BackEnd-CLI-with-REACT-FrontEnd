@@ -530,18 +530,18 @@ def actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,forma
         areatypecode = dd.areatypecodeid.areatypecodetext
         mapcode = dd.mapcodeid.mapcodetext
         data.append({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'datetime': dd.datetime,
-        'actualtotalloadvalue': dd.totalloadvalue,
-        'updatetime':dd.updatetime
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DateTimeUTC': dd.datetime,
+        'ActualTotalLoadValue': dd.totalloadvalue,
+        'UpdateTimeUTC':dd.updatetime
         })
     if data == []:
         return HttpResponse(status=403)
@@ -574,16 +574,16 @@ def actualtotalload_detail1(request,areaname,resolutioncode,year,month,format):
         mapcode = dd.mapcodeid.mapcodetext
         sum = Actualtotalload.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,year=year,month=month,day =dd.day,areatypecodeid = dd.areatypecodeid,mapcodeid = dd.mapcodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'actualtotalloadvalue': sum['totalloadvalue__sum'],
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'ActualTotalLoadByDayValue': sum['totalloadvalue__sum'],
         })
         if temp  not in data:
             data.append(temp)
@@ -619,15 +619,15 @@ def actualtotalload_detail(request,areaname,resolutioncode,year,format):
         mapcode = dd.mapcodeid.mapcodetext
         sum = Actualtotalload.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,year=year,month=dd.month,areatypecodeid = dd.areatypecodeid,mapcodeid = dd.mapcodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'actualtotalloadvalue': sum['totalloadvalue__sum'],
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'ActualTotalLoadByMonthValue': sum['totalloadvalue__sum'],
         })
         if temp  not in data:
             data.append(temp)
@@ -662,19 +662,19 @@ def aggregatedgenerationpertype_list(request):
         resolution = data.resolutioncodeid.resolutioncodetext
         production = data.productiontypeid.productiontypetext
         data_to_export.append({
-        'source': 'entso-e',
-        'dataset': 'Aggregatedgenerationpertype',
-        'areaname': data.areaname,
-        'areatypecode': areatype,
-        'mapcode': map,
-        'resolutioncode': resolution,
-        'year': data.year,
-        'month': data.month,
-        'day': data.day,
-        'datetime': data.datetime,
-        'productiontype': production,
+        'Source': 'entso-e',
+        'Dataset': 'Aggregatedgenerationpertype',
+        'AreaName': data.areaname,
+        'AreaTypeCode': areatype,
+        'MapCode': map,
+        'ResolutionCode': resolution,
+        'Year': data.year,
+        'Month': data.month,
+        'Day': data.day,
+        'DateTimeUTC': data.datetime,
+        'ProductionType': production,
         'ActualGenerationOutputValue': data.actualgenerationoutput,
-        'updatetime':data.updatetime
+        'UpdateTimeUTC':data.updatetime
         })
     if data == []:
         return HttpResponse(status=403)
@@ -692,19 +692,19 @@ def aggregatedgenerationpertype_detail2(request,areaname,productiontype,resoluti
         areatypecode = dd.areatypecodeid.areatypecodetext
         mapcode =dd.mapcodeid.mapcodetext
         data.append({
-        'source': 'entso-e',
-        'dataset': 'Aggregatedgenerationpertype',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'datetime': dd.datetime,
-        'productiontype': productiontype,
+        'Source': 'entso-e',
+        'Dataset': 'Aggregatedgenerationpertype',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DateTimeUTC': dd.datetime,
+        'ProductionType': productiontype,
         'ActualGenerationOutputValue': dd.actualgenerationoutput,
-        'updatetime':dd.updatetime
+        'UpdateTimeUTC':dd.updatetime
         })
     if data == []:
         return HttpResponse(status=403)
@@ -737,17 +737,17 @@ def aggregatedgenerationpertype_detail1(request,areaname,productiontype,resoluti
         mapcode =dd.mapcodeid.mapcodetext
         sum = Aggregatedgenerationpertype.objects.filter(areaname = areaname, resolutioncodeid = tmp[0].id, productiontypeid = tmp2[0].id,year = year, month = month,day = dd.day,areatypecodeid = dd.areatypecodeid,mapcodeid = dd.mapcodeid).aggregate(Sum('actualgenerationoutput'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'AggregatedGenerationPerType',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'productiontype': productiontype,
-        'ActualGenerationOutputValue': sum['actualgenerationoutput_sum'] ,
+        'Source': 'entso-e',
+        'Dataset': 'AggregatedGenerationPerType',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'ProductionType': productiontype,
+        'ActualGenerationOutputByDayValue': sum['actualgenerationoutput_sum'] ,
         })
         if temp not in data:
             data.append(temp)
@@ -782,16 +782,16 @@ def aggregatedgenerationpertype_detail(request,areaname,productiontype,resolutio
         mapcode =dd.mapcodeid.mapcodetext
         sum = Aggregatedgenerationpertype.objects.filter(areaname = areaname, resolutioncodeid = tmp[0].id, productiontypeid = tmp2[0].id,year = year, month = dd.month,areatypecodeid = dd.areatypecodeid,mapcodeid = dd.mapcodeid).aggregate(Sum('actualgenerationoutput'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'Aggregatedgenerationpertype',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'productiontype': productiontype,
-        'ActualGenerationOutputValue': sum['actualgenerationoutput__sum'],
+        'Source': 'entso-e',
+        'Dataset': 'Aggregatedgenerationpertype',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Productiontype': productiontype,
+        'ActualGenerationOutputByMonthValue': sum['actualgenerationoutput__sum'],
         })
         if temp not in data:
             data.append(temp)
@@ -856,18 +856,18 @@ def dayaheadtotalloadforecast_detail2(request,areaname,resolutioncode,year,month
         areatypecode = dd.areatypecodeid.areatypecodetext
         mapcode =dd.mapcodeid.mapcodetext
         data.append({
-        'source': 'entso-e',
-        'dataset': 'DayAheadTotalLoadForecast',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'datetime': dd.datetime,
+        'Source': 'entso-e',
+        'Dataset': 'DayAheadTotalLoadForecast',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DateTimeUTC': dd.datetime,
         'DayAheadTotalLoadForecastValue': dd.totalloadvalue,
-        'updatetime':dd.updatetime
+        'UpdateTimeUTC':dd.updatetime
         })
     if data == []:
         return HttpResponse(status=403)
@@ -899,16 +899,16 @@ def dayaheadtotalloadforecast_detail1(request,areaname,resolutioncode,year,month
         mapcode =dd.mapcodeid.mapcodetext
         sum =  Dayaheadtotalloadforecast.objects.filter(areaname = areaname, resolutioncodeid = tmp[0].id,year = year, month = month, day = dd.day,mapcodeid = dd.mapcodeid,areatypecodeid = dd.areatypecodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'DayAheadTotalLoadForecast',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'DayAheadTotalLoadForecastValue': sum['totalloadvalue_sum'],
+        'Source': 'entso-e',
+        'Dataset': 'DayAheadTotalLoadForecast',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DayAheadTotalLoadForecastByDayValue': sum['totalloadvalue_sum'],
         })
         if temp not in data:
             data.append(temp)
@@ -942,14 +942,14 @@ def dayaheadtotalloadforecast_detail(request,areaname,resolutioncode,year,format
         mapcode =dd.mapcodeid.mapcodetext
         sum =  Dayaheadtotalloadforecast.objects.filter(areaname = areaname, resolutioncodeid = tmp[0].id,year = year, month = dd.month,areatypecodeid = dd.areatypecodeid,mapcodeid = dd.mapcodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'DayAheadTotalLoadForecast',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
+        'Source': 'entso-e',
+        'Dataset': 'DayAheadTotalLoadForecast',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
         'DayAheadTotalLoadForecastValue': sum['totalloadvalue__sum'],
         })
         if temp not in data:
@@ -988,19 +988,18 @@ def actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,form
         mapcode = dd.mapcodeid.mapcodetext
         nes = Dayaheadtotalloadforecast.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,mapcodeid = dd.mapcodeid,datetime = dd.datetime,year=year,month=month,day=day)
         data.append({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'datetime': dd.datetime,
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DateTimeUTC': dd.datetime,
         'DayAheadTotalLoadForecastValue': nes[0].totalloadvalue,
-        'actualtotalloadvalue': dd.totalloadvalue,
-        'updatetime':dd.updatetime
+        'ActualTotalLoadvalue': dd.totalloadvalue,
         })
     if data == []:
         return HttpResponse(status=403)
@@ -1034,17 +1033,17 @@ def actualvsforecast_detail1(request,areaname,resolutioncode,year,month,format):
         sum = Actualtotalload.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,year=year,month=month,day =dd.day,mapcodeid = dd.mapcodeid,areatypecodeid = dd.areatypecodeid).aggregate(Sum('totalloadvalue'))
         nes = Dayaheadtotalloadforecast.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,mapcodeid = dd.mapcodeid,year=year,month=month,day=dd.day,areatypecodeid = dd.areatypecodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'day': dd.day,
-        'DayAheadTotalLoadForecastValue': nes['totalloadvalue_sum'],
-        'actualtotalloadvalue': sum['totalloadvalue_sum']
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'Day': dd.day,
+        'DayAheadTotalLoadForecastByDayValue': nes['totalloadvalue_sum'],
+        'ActualTotalLoadByDayValue': sum['totalloadvalue_sum']
         })
         if temp  not in data:
             data.append(temp)
@@ -1080,16 +1079,16 @@ def actualvsforecast_detail(request,areaname,resolutioncode,year,format):
         sum = Actualtotalload.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,year=year,month=dd.month,mapcodeid = dd.mapcodeid,areatypecodeid = dd.areatypecodeid).aggregate(Sum('totalloadvalue'))
         nes = Dayaheadtotalloadforecast.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,mapcodeid = dd.mapcodeid,year=year,month=dd.month,areatypecodeid = dd.areatypecodeid).aggregate(Sum('totalloadvalue'))
         temp = ({
-        'source': 'entso-e',
-        'dataset': 'ActualTotalLoad',
-        'areaname': dd.areaname,
-        'areatypecode': areatypecode,
-        'mapcode': mapcode,
-        'resolutioncode': resolutioncode,
-        'year': dd.year,
-        'month': dd.month,
-        'DayAheadTotalLoadForecastValue': nes['totalloadvalue__sum'],
-        'actualtotalloadvalue': sum['totalloadvalue__sum']
+        'Source': 'entso-e',
+        'Dataset': 'ActualTotalLoad',
+        'AreaName': dd.areaname,
+        'AreaTypeCode': areatypecode,
+        'MapCode': mapcode,
+        'ResolutionCode': resolutioncode,
+        'Year': dd.year,
+        'Month': dd.month,
+        'DayAheadTotalLoadForecastByMonthValue': nes['totalloadvalue__sum'],
+        'ActualTotalLoadByMonthValue': sum['totalloadvalue__sum']
         })
         if temp  not in data:
             data.append(temp)
