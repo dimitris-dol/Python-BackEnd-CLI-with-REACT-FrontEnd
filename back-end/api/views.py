@@ -154,8 +154,8 @@ class Login(views.APIView):
         user[0].save()
         if gg or ggg == user[0].password:
             jwt_token = {'token' : user[0].api_key}
-            return HttpResponse(
-                jwt_token,status =200
+            return JsonResponse(
+                jwt_token
             )
         else:
             return HttpResponse(
@@ -180,7 +180,7 @@ def auth_token(token):
     users = User.objects.all()
     flag = False
     for dd in users:
-        if token[0].find(dd.api_key) > -1 and (len(token[0]) - len(dd.api_key)) <=20:
+        if token.find(dd.api_key) > -1 and (len(token) - len(dd.api_key)) <=20:
             user = dd
             flag = True
             break
@@ -259,7 +259,7 @@ def user_detail(request,pk):
     except User.DoesNotExist:
         return HttpResponse(status=404)
 
-    if request.method == 'GET':
+    if request.method == 'POST':
         serializer = UserSerializer(user)
         return JsonResponse(serializer.data)
     elif request.method == 'POST':
@@ -277,7 +277,7 @@ def user_detail(request,pk):
 #returns all actualTotalLoads objects
 #@login_required(login_url='/api/Login')
 def actualtotalload_list(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         actualtotalloads = Actualtotalload.objects.all()
         data_to_export = []
         for data in actualtotalloads:
@@ -314,9 +314,9 @@ def actual(request,areaname,resolutioncode,date,info):
         tmp = info[8:10]
         day = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv') >-1:
             format = 'csv'
-        token = request.headers['X_OBSERVATORY_AUTH']
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token) == 2:
             return actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -329,9 +329,9 @@ def actual(request,areaname,resolutioncode,date,info):
         tmp = info[5:7]
         month = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = request.headers['X_OBSERVATORY_AUTH']
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualtotalload_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -342,10 +342,12 @@ def actual(request,areaname,resolutioncode,date,info):
         tmp = info[0:4]
         year = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv') > -1:
             format = 'csv'
-        token = token
-        token = request.headers['X_OBSERVATORY_AUTH']
+        print(format)
+        token = request.META['X_OBSERVATORY_AUTH']
+        print("gg")
+        print(token)
         if auth_token(token)==2:
             return actualtotalload_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -372,9 +374,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         tmp = info[8:10]
         day = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail2(request,areaname,productiontype,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -387,9 +389,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         tmp = info[5:7]
         month = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail1(request,areaname,productiontype,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -400,9 +402,9 @@ def aggre(request,areaname,productiontype,resolutioncode,date,info):
         tmp = info[0:4]
         year = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return aggregatedgenerationpertype_detail(request,areaname,productiontype,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -426,9 +428,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
         tmp = info[8:10]
         day = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -441,9 +443,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
         tmp = info[5:7]
         month = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -454,9 +456,9 @@ def dayahead(request,areaname,resolutioncode,date,info):
         tmp = info[0:4]
         year = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return dayaheadtotalloadforecast_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -480,9 +482,9 @@ def actualvs(request,areaname,resolutioncode,date,info):
         tmp = info[8:10]
         day = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token)==1 :
@@ -495,9 +497,10 @@ def actualvs(request,areaname,resolutioncode,date,info):
         tmp = info[5:7]
         month = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualvsforecast_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -508,9 +511,9 @@ def actualvs(request,areaname,resolutioncode,date,info):
         tmp = info[0:4]
         year = int(tmp)
         format = 'json'
-        if info.find('csv'):
+        if info.find('csv')>-1:
             format = 'csv'
-        token = token
+        token = request.META['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualvsforecast_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
@@ -545,8 +548,8 @@ def actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,forma
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['datetime'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['DateTimeUTC'])
         if  format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -589,8 +592,8 @@ def actualtotalload_detail1(request,areaname,resolutioncode,year,month,format):
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['day'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Day'])
         if format =='json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -633,8 +636,8 @@ def actualtotalload_detail(request,areaname,resolutioncode,year,format):
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['month'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Month'])
         if format=='json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format=='csv':
@@ -678,7 +681,7 @@ def aggregatedgenerationpertype_list(request):
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
+    if request.method == 'POST':
         return JsonResponse(data_to_export,json_dumps_params={'indent': 2},safe = False)
 
 
@@ -708,8 +711,8 @@ def aggregatedgenerationpertype_detail2(request,areaname,productiontype,resoluti
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['datetime'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['DateTimeUTC'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format =='csv':
@@ -747,14 +750,14 @@ def aggregatedgenerationpertype_detail1(request,areaname,productiontype,resoluti
         'Month': dd.month,
         'Day': dd.day,
         'ProductionType': productiontype,
-        'ActualGenerationOutputByDayValue': sum['actualgenerationoutput_sum'] ,
+        'ActualGenerationOutputByDayValue': sum['actualgenerationoutput__sum'] ,
         })
         if temp not in data:
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['day'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Day'])
         if format=='json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format=='csv':
@@ -797,8 +800,8 @@ def aggregatedgenerationpertype_detail(request,areaname,productiontype,resolutio
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['month'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Month'])
         if format == 'json':
             return JsonResponse(data,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -844,7 +847,7 @@ def dayaheadtotalloadforecast_list(request):
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
+    if request.method == 'POST':
         return JsonResponse(data_to_export,json_dumps_params={'indent': 2},safe = False)
 
 #@csrf_exempt
@@ -871,8 +874,8 @@ def dayaheadtotalloadforecast_detail2(request,areaname,resolutioncode,year,month
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['datetime'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['DateTimeUTC'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -908,14 +911,14 @@ def dayaheadtotalloadforecast_detail1(request,areaname,resolutioncode,year,month
         'Year': dd.year,
         'Month': dd.month,
         'Day': dd.day,
-        'DayAheadTotalLoadForecastByDayValue': sum['totalloadvalue_sum'],
+        'DayAheadTotalLoadForecastByDayValue': sum['totalloadvalue__sum'],
         })
         if temp not in data:
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['day'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Day'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -950,14 +953,14 @@ def dayaheadtotalloadforecast_detail(request,areaname,resolutioncode,year,format
         'ResolutionCode': resolutioncode,
         'Year': dd.year,
         'Month': dd.month,
-        'DayAheadTotalLoadForecastValue': sum['totalloadvalue__sum'],
+        'DayAheadTotalLoadForecastByMonthValue': sum['totalloadvalue__sum'],
         })
         if temp not in data:
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['month'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Month'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -987,6 +990,7 @@ def actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,form
         areatypecode = dd.areatypecodeid.areatypecodetext
         mapcode = dd.mapcodeid.mapcodetext
         nes = Dayaheadtotalloadforecast.objects.filter(areaname = areaname,resolutioncodeid = resolutioncodeid,mapcodeid = dd.mapcodeid,datetime = dd.datetime,year=year,month=month,day=day)
+        print(nes)
         data.append({
         'Source': 'entso-e',
         'Dataset': 'ActualTotalLoad',
@@ -999,12 +1003,12 @@ def actualvsforecast_detail2(request,areaname,resolutioncode,year,month,day,form
         'Day': dd.day,
         'DateTimeUTC': dd.datetime,
         'DayAheadTotalLoadForecastValue': nes[0].totalloadvalue,
-        'ActualTotalLoadvalue': dd.totalloadvalue,
+        'ActualTotalLoadValue': dd.totalloadvalue,
         })
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['datetime'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['DateTimeUTC'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -1042,15 +1046,15 @@ def actualvsforecast_detail1(request,areaname,resolutioncode,year,month,format):
         'Year': dd.year,
         'Month': dd.month,
         'Day': dd.day,
-        'DayAheadTotalLoadForecastByDayValue': nes['totalloadvalue_sum'],
-        'ActualTotalLoadByDayValue': sum['totalloadvalue_sum']
+        'DayAheadTotalLoadForecastByDayValue': nes['totalloadvalue__sum'],
+        'ActualTotalLoadByDayValue': sum['totalloadvalue__sum']
         })
         if temp  not in data:
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['day'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Day'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
@@ -1094,8 +1098,8 @@ def actualvsforecast_detail(request,areaname,resolutioncode,year,format):
             data.append(temp)
     if data == []:
         return HttpResponse(status=403)
-    if request.method == 'GET':
-        newdata = sorted(data, key=lambda k: k['month'])
+    if request.method == 'POST':
+        newdata = sorted(data, key=lambda k: k['Month'])
         if format == 'json':
             return JsonResponse(newdata,json_dumps_params={'indent': 2},safe = False)
         elif format == 'csv':
