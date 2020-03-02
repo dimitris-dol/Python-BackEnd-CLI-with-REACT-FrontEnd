@@ -109,7 +109,7 @@ def main():
                                             'ActualvsForecast','Admin'])
 
     command_line.add_argument('--username', default = '')
-    command_line.add_argument('--passw', type = psw, default = '')
+    command_line.add_argument('--passw', type = psw)
     command_line.add_argument('--area')
     command_line.add_argument('--timeres', choices = ['PT15M','PT30M','PT60M'])
     command_line.add_argument('--date', type = is_date)
@@ -364,6 +364,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-def ss(a):
-    return a
