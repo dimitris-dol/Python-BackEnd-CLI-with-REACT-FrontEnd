@@ -47,7 +47,7 @@ class LoginTestCase(TestCase):
         user = User.objects.all()
         token = user[0].api_key
         print(token)
-        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/year/2018',  **{'X_OBSERVATORY_AUTH':token})
+        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/year/2018',  **{'headers':token})
         print(response.json())
         t = response.json()
         tmp = t[0]['ActualTotalLoadByMonthValue']
@@ -59,7 +59,7 @@ class LoginTestCase(TestCase):
         user = User.objects.all()
         token = user[0].api_key
         print(token)
-        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/month/2018-01',**{'X_OBSERVATORY_AUTH': token})
+        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/month/2018-01',**{'headers': token})
         t = response.json()
         temp = t[0]['ActualTotalLoadByDayValue']
         print(temp)
@@ -70,7 +70,7 @@ class LoginTestCase(TestCase):
         user = User.objects.all()
         token = user[0].api_key
         print(token)
-        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/date/2018-01-04',**{'X_OBSERVATORY_AUTH': token})
+        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/date/2018-01-04',**{'headers': token})
         t = response.json()
         tmp = t[0]['ActualTotalLoadValue']
         print(tmp)
@@ -81,7 +81,7 @@ class LoginTestCase(TestCase):
     def test_year_sum_aggregatedgenerationpertype(self):
         print("AggreatedGenerationPerType year sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/year/2018',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/year/2018',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualGenerationOutputByMonthValue']
         print(tmp)
@@ -90,7 +90,7 @@ class LoginTestCase(TestCase):
     def test_month_sum_aggregatedgenerationpertype(self):
         print("AggregatedGenerationPerType month sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/month/2018-01',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/month/2018-01',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualGenerationOutputByDayValue']
         print(tmp)
@@ -99,7 +99,7 @@ class LoginTestCase(TestCase):
     def test_full_date_aggregatedgenerationpertype(self):
         print("AggregatedGenerationPerType full date")
         user = User.objects.all()
-        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/date/2018-01-05',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/AggregatedGenerationPerType/Greece/Waste/PT60M/date/2018-01-05',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualGenerationOutputValue']
         print(tmp)
@@ -110,7 +110,7 @@ class LoginTestCase(TestCase):
     def test_year_sum_dayaheadtotalloadforecast(self):
         print("DayAheadTotalLoadForecast year sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/year/2018',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/year/2018',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['DayAheadTotalLoadForecastByMonthValue']
         self.assertEqual(tmp,'1702.68')
@@ -118,7 +118,7 @@ class LoginTestCase(TestCase):
     def test_month_sum_dayaheadtotalloadforecast(self):
         print("DayAheadTotalLoadForecast month sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/month/2018-01',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/month/2018-01',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['DayAheadTotalLoadForecastByDayValue']
         self.assertEqual(tmp,'1135.12')
@@ -126,7 +126,7 @@ class LoginTestCase(TestCase):
     def test_full_date_dayaheadtotalloadforecast(self):
         print("DayAheadTotalLoadForecast full date")
         user = User.objects.all()
-        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/date/2018-01-05',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/date/2018-01-05',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['DayAheadTotalLoadForecastValue']
         self.assertEqual(tmp,'567.56')
@@ -136,7 +136,7 @@ class LoginTestCase(TestCase):
     def test_year_sum_actualvsforecast(self):
         print("ActualvsForecast year sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/year/2018',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/year/2018',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualTotalLoadByMonthValue']
         self.assertEqual(tmp,'1702.68')
@@ -144,7 +144,7 @@ class LoginTestCase(TestCase):
     def test_month_sum_actualvsforecast(self):
         print("ActualvsForecast month sum")
         user = User.objects.all()
-        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/month/2018-01',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/month/2018-01',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualTotalLoadByDayValue']
         self.assertEqual(tmp,'1135.12')
@@ -152,7 +152,7 @@ class LoginTestCase(TestCase):
     def test_full_date_actualvsforecast(self):
         print("ActualvsForecast full date")
         user = User.objects.all()
-        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/date/2018-01-05',**{'X_OBSERVATORY_AUTH':user[0].api_key})
+        response = self.client.post('/energy/api/ActualvsForecast/Greece/PT60M/date/2018-01-05',**{'headers':user[0].api_key})
         t = response.json()
         tmp = t[0]['ActualTotalLoadValue']
         self.assertEqual(tmp,'567.56')
@@ -195,7 +195,7 @@ def test_login(self):
         print("out of quotas")
         user = User.objects.all()
         user[0].counter = user[0].quotas + 1
-        response = self.client.get('/energy/api/ActualvsForecast/Greece/PT60M/year/2018-01-04',**{X_OBSERVATORY_AUTH:user[0].api_key})
+        response = self.client.get('/energy/api/ActualvsForecast/Greece/PT60M/year/2018-01-04',**{'headers':user[0].api_key})
         print(response)
         self.assertEqual(response.status_code,402)
 
