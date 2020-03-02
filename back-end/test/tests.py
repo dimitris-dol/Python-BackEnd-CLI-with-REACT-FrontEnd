@@ -6,6 +6,11 @@ from api.urls import *
 from django.urls import *
 import json
 import datetime
+from rest_framework.request import Request
+from api import views
+from rest_framework.test import APIClient
+from requests.auth import HTTPBasicAuth
+from rest_framework.test import RequestsClient
 
 class LoginTestCase(TestCase):
 
@@ -47,8 +52,8 @@ class LoginTestCase(TestCase):
         user = User.objects.all()
         token = user[0].api_key
         print(token)
-        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/year/2018',  **{'headers':token})
-        print(response.json())
+        response = self.client.post('/energy/api/ActualTotalLoad/Greece/PT60M/year/2018',**{'headers':token})
+        print(response)
         t = response.json()
         tmp = t[0]['ActualTotalLoadByMonthValue']
         print(tmp)
