@@ -232,6 +232,8 @@ def test_f_ActualvsForecast(monkeypatch):
 
 def test_f_newuser(monkeypatch):
     with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Login','--username','admin','--passw','321nimda'])
+        CLI.main()
         m.setattr(sys, 'argv', ['CLI','Admin','--newuser','--username','dimitris','--passw','8717','--email','some@gmail.com','--quota','100'])
         assert CLI.main() ==1
     with monkeypatch.context() as m:
@@ -246,6 +248,8 @@ def test_f_newuser(monkeypatch):
 
 def test_f_moduser(monkeypatch):
     with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Login','--username','admin','--passw','321nimda'])
+        CLI.main()
         m.setattr(sys, 'argv', ['CLI','Admin','--moduser','--username','dimitris','--passw','8717','--email','some@gmail.com','--quota','100'])
         assert CLI.main() ==1
     with monkeypatch.context() as m:
@@ -260,6 +264,8 @@ def test_f_moduser(monkeypatch):
 
 def test_f_userstatus(monkeypatch):
     with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Login','--username','admin','--passw','321nimda'])
+        CLI.main()
         m.setattr(sys, 'argv', ['CLI','Admin','--userstatus','--username','dimitris'])
         assert CLI.main() ==1
     with monkeypatch.context() as m:
@@ -271,6 +277,8 @@ def test_f_userstatus(monkeypatch):
 
 def test_f_newdata(monkeypatch):
     with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Login','--username','admin','--passw','321nimda'])
+        CLI.main()
         m.setattr(sys, 'argv', ['CLI','Admin','--newdata','ActualTotalLoad','--source','saom.csv'])
         assert CLI.main() == 1
     with monkeypatch.context() as m:

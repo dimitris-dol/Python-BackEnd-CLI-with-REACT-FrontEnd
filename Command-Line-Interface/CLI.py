@@ -279,7 +279,7 @@ def main():
             if args.apikey:
                 api_key = args.apikey
             url_format = url + 'ActualvsForecast/' + args.area + '/' + args.timeres + '/' +  type + '/' + dmy + '&format=' + args.format
-            result = requests.post(url_format, headers = {'X_OBSERVATORY_AUTH' : api_key})
+            result = requests.post(url_format, headers = {'headers' : api_key})
             try_except(result)
             return 1
         except ConnectionError as Err:
@@ -345,11 +345,14 @@ def main():
                 if not args.source:
                     print('No source provided')
                     return "Invalid parameter"
+                api_key = getkey()
+                if args.apikey:
+                    api_key = args.apikey
                 url_format = url + 'Admin/' + 'newdata'
                 try:
                     source = './' + args.source
                     with open(source, 'rb') as f:
-                        result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, files = {'file' : f}, headers = {'headers' : api_key})
+                        result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, headers = {'headers' : api_key}, files = {'file' : f})
                         print(result.text)
                         try_except(result)
                         return 1
