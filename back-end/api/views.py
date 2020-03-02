@@ -26,6 +26,7 @@ from django.contrib.auth.decorators import *
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from django.template import Context, loader
 
 #Den yparxei to email sti database
 class newuser(views.APIView):
@@ -153,8 +154,8 @@ class Login(views.APIView):
         user[0].save()
         if gg or ggg == user[0].password:
             jwt_token = {'token' : user[0].api_key}
-            return JsonResponse(
-                jwt_token
+            return HttpResponse(
+                jwt_token,status =200
             )
         else:
             return HttpResponse(
@@ -167,7 +168,8 @@ class Login(views.APIView):
 class Logout(views.APIView):
     def post(self,request,*args,**kwargs):
         #del request #deletiung token
-        return HttpResponse("",status=200)
+        template = loader.get_template("log.html")
+        return HttpResponse(template.render(),status=200)
 
 #not used
 class UploadFileForm(forms.Form):
@@ -319,6 +321,7 @@ def actual(request,areaname,resolutioncode,date,info):
             if tmp[1].find('csv') > -1:
                 format = 'csv'
         token = token
+        token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token) == 2:
             return actualtotalload_detail2(request,areaname,resolutioncode,year,month,day,format)
         elif auth_token(token) ==1 :
@@ -337,6 +340,7 @@ def actual(request,areaname,resolutioncode,date,info):
             token = tmp[2].split('=')
             if tmp[1].find('csv') > -1:
                 format = 'csv'
+        token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualtotalload_detail1(request,areaname,resolutioncode,year,month,format)
         elif auth_token(token)==1 :
@@ -354,6 +358,7 @@ def actual(request,areaname,resolutioncode,date,info):
             if tmp[1].find('csv') > -1:
                 format = 'csv'
         token = token
+        token = request.headers['X_OBSERVATORY_AUTH']
         if auth_token(token)==2:
             return actualtotalload_detail(request,areaname,resolutioncode,year,format)
         elif auth_token(token)==1 :
