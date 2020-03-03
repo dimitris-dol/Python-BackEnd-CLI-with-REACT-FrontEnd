@@ -151,11 +151,6 @@ def reset(request):
     Aggregatedgenerationpertype.objects.all().delete()
     Dayaheadtotalloadforecast.objects.all().delete()
     User.objects.all().delete()
-    Allocatedeicdetail.objects.all().delete()
-    Areatypecode.objects.all().delete()
-    Mapcode.objects.all().delete()
-    Productiontype.objects.all().delete()
-    Resolutioncode.objects.all().delete()
     User.objects.create(loginname = 'admin', password = '321nimda' , email = 'ex@gmail.com' , dateOfkey = datetime.now() , quotas = 1)
     return JsonResponse({'status':'OK'})
 
