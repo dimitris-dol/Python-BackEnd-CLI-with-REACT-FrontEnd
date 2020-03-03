@@ -109,7 +109,7 @@ def main():
                                             'ActualvsForecast','Admin'])
 
     command_line.add_argument('--username', default = '')
-    command_line.add_argument('--passw', type = psw, default = '')
+    command_line.add_argument('--passw', type = psw)
     command_line.add_argument('--area')
     command_line.add_argument('--timeres', choices = ['PT15M','PT30M','PT60M'])
     command_line.add_argument('--date', type = is_date)
@@ -353,17 +353,16 @@ def main():
                     source = './' + args.source
                     with open(source, 'rb') as f:
                         result = requests.post(url_format, data = {'filename' : args.source, 'type' : args.newdata}, headers = {'headers' : api_key}, files = {'file' : f})
-                        print(result.text)
                         try_except(result)
-                        return 1
+                        if result.status_code == 200:
+                            return 1
+                        else:
+                            return 2
                 except FileNotFoundError:
                     print('File was not found in the directory')
-                    return 2
+                    return 3
             except ConnectionError as Err:
                 print('An error occured \n',Err)
 
 if __name__ == '__main__':
     main()
-
-def ss(a):
-    return a

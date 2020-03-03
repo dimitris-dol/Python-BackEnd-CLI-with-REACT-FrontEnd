@@ -19,6 +19,7 @@ import jwt
 from operator import itemgetter
 from django.db.models import Sum
 import csv
+from datetime import datetime
 from io import StringIO
 from django.shortcuts import redirect
 from django.template import loader
@@ -116,23 +117,24 @@ class newdata(views.APIView):
                     elif type == 'DayAheadTotalLoadForecast':
                         cursor.execute('SELECT COUNT(id) FROM Dayaheadtotalloadforecast')
                     init = int(cursor.fetchall()[0][0])
-                    for c in csv_reader:
+                    for cr in csv_reader:
                         counter = counter + 1
                         if counter == 1:
                             continue
+                        c = cr[0].split(';')
                         if type == 'ActualTotalLoad': #16
-                            conn.cursor().execute('INSERT INTO Actualtotalload VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16]))
+                            cursor.execute('INSERT INTO Actualtotalload VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE Entitymodifiedat = %s',(c[0],datetime.strptime(c[1].split('.')[0],'%Y-%m-%d %H:%M:%S'),datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S'),c[3],None,c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16],datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S')))
                         elif type == 'AggregatedGenerationPerType': #18
-                            conn.cursor().execute('INSERT INTO Aggregatedgenerationpertype VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16],c[17],c[18]))
+                            cursor.execute('INSERT INTO Aggregatedgenerationpertype VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE Entitymodifiedat = %s',(c[0],datetime.strptime(c[1].split('.')[0],'%Y-%m-%d %H:%M:%S'),datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S'),c[3],None,c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16],c[17],c[18],datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S')))
                         elif type == 'DayAheadTotalLoadForecast': #16
-                            conn.cursor().execute('INSERT INTO Dayaheadtotalloadforecast VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE',(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16]))
+                            cursor.execute('INSERT INTO Dayaheadtotalloadforecast VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE Entitymodifiedat = %s',(c[0],datetime.strptime(c[1].split('.')[0],'%Y-%m-%d %H:%M:%S'),datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S'),c[3],None,c[5],c[6],c[7],c[8],c[9],c[10],c[11],c[12],c[13],c[14],c[15],c[16],datetime.strptime(c[2].split('.')[0],'%Y-%m-%d %H:%M:%S')))
                     if type == 'ActualTotalLoad':
-                        cnx.cursor().execute('SELECT COUNT(id) FROM Actualtotalload')
+                        cursor.execute('SELECT COUNT(id) FROM Actualtotalload')
                     elif type == 'AggregatedGenerationPerType':
-                        cnx.cursor().execute('SELECT COUNT(id) FROM Aggregatedgenerationpertype')
+                        cursor.execute('SELECT COUNT(id) FROM Aggregatedgenerationpertype')
                     elif type == 'DayAheadTotalLoadForecast':
-                        cnx.cursor().execute('SELECT COUNT(id) FROM Dayaheadtotalloadforecast')
-                    fin = int(cnx.cursor().fetchall()[0][0])
+                        cursor.execute('SELECT COUNT(id) FROM Dayaheadtotalloadforecast')
+                    fin = int(cursor.fetchall()[0][0])
                 except:
                     return JsonResponse({'file' : 'invalid content'})
             return JsonResponse({'status' : 'ok',
@@ -154,6 +156,7 @@ def reset(request):
     Mapcode.objects.all().delete()
     Productiontype.objects.all().delete()
     Resolutioncode.objects.all().delete()
+    User.objects.create(loginname = 'admin', password = '321nimda' , email = 'ex@gmail.com' , dateOfkey = datetime.now() , quotas = 1)
     return JsonResponse({'status':'OK'})
 
 #Login class after submit button on webpage

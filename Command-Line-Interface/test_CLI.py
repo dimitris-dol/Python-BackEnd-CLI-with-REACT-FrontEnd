@@ -283,4 +283,18 @@ def test_f_newdata(monkeypatch):
         assert CLI.main() == 1
     with monkeypatch.context() as m:
         m.setattr(sys, 'argv', ['CLI','Admin','--newdata','DayAheadTotalLoadForecast','--source','doesnotexist.csv'])
+        assert CLI.main() == 3
+    with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Admin','--newdata','ActualTotalLoad','--source','test1.csv'])
+        assert CLI.main() == 1
+    with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Admin','--newdata','AggregatedGenerationPerType','--source','test2.csv'])
+        assert CLI.main() == 1
+    with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Admin','--newdata','DayAheadTotalLoadForecast','--source','test3.csv'])
+        assert CLI.main() == 1
+    with monkeypatch.context() as m:
+        m.setattr(sys, 'argv', ['CLI','Login','--username','dimitris','--passw','8717'])
+        CLI.main()
+        m.setattr(sys, 'argv', ['CLI','Admin','--newdata','DayAheadTotalLoadForecast','--source','test3.csv'])
         assert CLI.main() == 2
