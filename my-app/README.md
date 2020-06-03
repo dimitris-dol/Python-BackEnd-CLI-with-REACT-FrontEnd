@@ -1,3 +1,31 @@
+   Οδηγός εγκατάστασης Website
+   
+   1. Install node.js
+   2. Install yarn
+   
+   2.5 Κατεβάστε τα αρχεία απο src
+   
+   Στο powershell των windows
+   
+   3. mkdir my-app
+   
+      cd my-app
+   4. yarn install
+   5. yarn create react-app my-app
+   6. yarn add react-scripts
+   7. yarn add bootstrap
+   8. yarn add jquery
+   9. yarn add popper.js
+   10. yarn add serialize-javascript (νμζω)
+   11. yarn add react-router-dom
+   12. yarn add react-simple-maps
+   13. yarn add react-year-picker
+   14. yarn add react-datepicker
+   15. yearn add οτιδηποτε αλλο χρειαζεται για να τρεξουν τα αρχεία στο start
+   
+   16. yarn start
+   17. ανοιγμα http://localhost:3000/
+
 HTTPS ERROR:
 
 How to get HTTPS certificate on your PC:
