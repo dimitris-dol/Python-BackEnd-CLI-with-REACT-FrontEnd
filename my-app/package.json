@@ -22,7 +22,7 @@
     "react-svg-map": "^2.0.2",
     "react-tooltip": "^4.0.3",
     "react-year-picker": "^0.3.7",
-    "serialize-javascript": "^3.0.0"
+    "serialize-javascript": "^3.1.0"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
